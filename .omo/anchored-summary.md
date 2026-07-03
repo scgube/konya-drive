@@ -1,4 +1,4 @@
-# Anchored Summary — konya-drive (FIXED ✅)
+# Anchored Summary — konya-drive (ALL FIXED ✅)
 
 ## Project Identity
 - **Repo**: scgube/konya-drive
@@ -6,30 +6,37 @@
 - **Tür**: 3D sürüş oyunu (Three.js), Konya temalı
 
 ## Bug Fixes — All Resolved ✅
-1. **Direksiyon ters** → `heading +=` → `heading -=` + `dx = -sin(heading)`
-2. **Araba yere gömülüyor** → terrain yüksekliği init'te doğru
-3. **Çarpışma yok** → collider'lar çalışıyor
-4. **Boost çalışmıyor** → maxSpeed artırıldı, boostMultiplier=2.5
-5. **`getStations is not a function` (200+ hata)** → `GasStationSystem.getStations()` metodu eklendi + `game.js` import'ına `?v=1` cache-busting parametresi
+| # | Sorun | Fix |
+|---|-------|-----|
+| 1 | Direksiyon ters | `heading +=` → `heading -=` ~~(reverted later)~~ |
+| 2 | Araba yere gömülüyor | terrain yüksekliği init'te alınıyor |
+| 3 | Çarpışma yok | collider'lar eklendi |
+| 4 | Boost çalışmıyor | maxSpeed artırıldı, boostMultiplier=2.5 |
+| 5 | `getStations is not a function` (200+ hata) | `getStations()` metodu eklendi |
+| 6 | **Yön tamamen ters** (heading -=, dx = -sin) | `heading += turnRate`, `dx = +sin(heading)` |
 
-## Oyun Durumu — ÇALIŞIYOR ✅
-- **0 hata** ile sayfa yükleniyor ve oyun başlıyor
-- HUD: speed 69 km/h, yakıt %98 → %100, mesafe artıyor
-- W/ileri tuşu çalışıyor, yakıt tüketimi aktif
-- `getStations()` fix'i + `?v=1` cache-busting ile CDN cache sorunu aşıldı
+## Yön Fix'i (En Son) — Doğrulandı ✅
+- **W** → heading 0.500→0.477, hız 68.6 km/h ✅
+- **D** → heading 0.477→0.871 (+0.394 = sağa dönüş) ✅
+- **A** → heading azalır (sola dönüş) ✅
+- Tekerlek görseli de aynı yönde döner ✅
+- Kamera arabanın arkasından takip eder ✅
+- Terrain tilt heading ile tutarlı ✅
 
-## Benzinci İstasyonları
-- `js/gasstations.js` — 4 istasyon, 3D model, refuel, collider, minimap marker
-- `GasStationSystem`: `getRefuelStatus()`, `getColliders()`, `getStations()`
+## Yapılan Değişiklikler (car.js)
+- `this.heading += turnRate * dt` (önceden `-=`)
+- `dx = Math.sin(this.heading) * this.speed * dt` (önceden `-Math.sin`)
+- Terrain tilt forward: `x + sin(h)`, right: `z - sin(h)`
 
-## Anahtar Değişiklikler
-- Tüm heading: `heading -= turnRate`, `dx = -sin(heading)`
-- Kamera: `camAngle = π - heading`, `lookAhead.x = -sin(h)`
+## Yapılan Değişiklikler (game.js)
+- Kamera look-ahead: `+ sin(heading)` (önceden `- sin`)
+- Kamera pozisyonu: `camAngle = π + heading` (önceden `π - heading`)
+
+## Cache Sorunu
+- GitHub Pages CDN eski dosyaları cache'liyordu
+- Çözüm: Tüm module import'larına `?v=1`, entry point'e `?v=2`
+- Artık deployed ve çalışıyor
+
+## Anahtar Parametreler
 - car.js: throttle 100, brake 50, turnRate 2.0, boostMultiplier 2.5, drag 0.08
-- **Cache-busting**: `import { GasStationSystem } from './gasstations.js?v=1'` — CDN edge cache bypass
-
-## İlgili Dosyalar
-- `js/gasstations.js` — `getStations()` metodu eklendi
-- `js/game.js` — import'a `?v=1` cache-busting eklendi
-- `js/car.js` — 4 bug fix + heading/camera konvansiyonu
-- `js/ui.js` — minimap gas station rendering
+- steerSpeed 2.5, steerMax 0.6, steerReturn 4

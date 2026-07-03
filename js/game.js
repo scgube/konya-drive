@@ -339,7 +339,7 @@ export class Game {
         const behindHeight = this.camHeight;
 
         // Base camera angle (behind car)
-        const camAngle = Math.PI + heading;
+        const camAngle = Math.PI - heading;
 
         // Apply mouse look
         const lookX = mouseLook.x;
@@ -364,7 +364,7 @@ export class Game {
 
         // Look at position (ahead of car)
         const lookAheadDist = this.camLookAhead;
-        const lookX2 = carPos.x + Math.sin(heading) * lookAheadDist;
+        const lookX2 = carPos.x - Math.sin(heading) * lookAheadDist;
         const lookZ2 = carPos.z + Math.cos(heading) * lookAheadDist;
         const lookY2 = carPos.y + 0.5;
 
