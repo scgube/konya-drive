@@ -1,12 +1,12 @@
 // game.js - Ana oyun döngüsü, kamera sistemi, oyun durumu yönetimi
 import * as THREE from 'three';
-import { Controls } from './controls.js';
-import { Terrain } from './terrain.js';
-import { RoadSystem } from './roads.js';
-import { LandmarkSystem } from './landmarks.js';
+import { Controls } from './controls.js?v=1';
+import { Terrain } from './terrain.js?v=1';
+import { RoadSystem } from './roads.js?v=1';
+import { LandmarkSystem } from './landmarks.js?v=1';
 import { GasStationSystem } from './gasstations.js?v=1';
-import { Car } from './car.js';
-import { UI } from './ui.js';
+import { Car } from './car.js?v=1';
+import { UI } from './ui.js?v=1';
 
 export class Game {
     constructor() {
