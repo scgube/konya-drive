@@ -309,8 +309,7 @@ export class LandmarkSystem {
 
         // Salt pile decoration
         const saltMat = new THREE.MeshLambertMaterial({
-            color: 0xeeeeee,
-            roughness: 0.9
+            color: 0xeeeeee
         });
         const saltPile = new THREE.Mesh(
             new THREE.SphereGeometry(1.5, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.5),

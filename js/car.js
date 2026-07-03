@@ -53,7 +53,7 @@ export class Car {
 
     _buildModel() {
         // Car body - sporty hatchback shape
-        const bodyMat = new THREE.MeshLambertMaterial({
+        const bodyMat = new THREE.MeshStandardMaterial({
             color: 0xcc2222,
             roughness: 0.3,
             metalness: 0.6
@@ -187,7 +187,7 @@ export class Car {
 
         // Wheels (4)
         const wheelMat = new THREE.MeshLambertMaterial({ color: 0x1a1a1a });
-        const rimMat = new THREE.MeshLambertMaterial({
+        const rimMat = new THREE.MeshStandardMaterial({
             color: 0xcccccc,
             metalness: 0.8,
             roughness: 0.2

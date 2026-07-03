@@ -82,7 +82,6 @@ export class Terrain {
         this.waterMesh = null;
         this.treeGroup = null;
         this.trees = [];
-        this.buildGrassGeometry();
         this.generate();
     }
 
@@ -194,9 +193,7 @@ export class Terrain {
 
         const material = new THREE.MeshLambertMaterial({
             vertexColors: true,
-            flatShading: false,
-            roughness: 0.8,
-            metalness: 0.0
+            flatShading: false
         });
 
         this.terrainMesh = new THREE.Mesh(geometry, material);
