@@ -399,12 +399,12 @@ export class Car {
         const sampleDist = 1.5;
         const hCenter = this.terrain.getHeight(this.x, this.z);
         const hForward = this.terrain.getHeight(
-            this.x + Math.sin(this.heading) * sampleDist,
+            this.x - Math.sin(this.heading) * sampleDist,
             this.z + Math.cos(this.heading) * sampleDist
         );
         const hRight = this.terrain.getHeight(
-            this.x + Math.sin(this.heading + Math.PI / 2) * sampleDist,
-            this.z + Math.cos(this.heading + Math.PI / 2) * sampleDist
+            this.x + Math.cos(this.heading) * sampleDist,
+            this.z + Math.sin(this.heading) * sampleDist
         );
 
         const tiltForward = (hForward - hCenter) / sampleDist;
