@@ -258,9 +258,9 @@ export class Car {
     }
 
     _initPosition() {
-        // Start near Mevlana Museum
-        this.x = -25;
-        this.z = -45;
+        // Start near Mevlana Museum (outside landmark collider at -30,-50 r=14)
+        this.x = -50;
+        this.z = -50;
         this.heading = 0;
         this.speed = 0;
         this.y = this.terrain.getHeight(this.x, this.z);
