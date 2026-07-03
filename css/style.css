@@ -1,0 +1,431 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background: #000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#game-container canvas {
+    display: block;
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Speedometer */
+#speedometer {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(255, 200, 50, 0.6);
+    border-radius: 12px;
+    padding: 12px 24px;
+    min-width: 130px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(255, 200, 50, 0.15);
+}
+
+#speed-value {
+    font-size: 42px;
+    font-weight: 700;
+    color: #ffcc33;
+    text-shadow: 0 0 10px rgba(255, 204, 51, 0.3);
+    line-height: 1;
+}
+
+#speed-unit {
+    font-size: 13px;
+    color: #aaa;
+    letter-spacing: 2px;
+    margin-top: 2px;
+}
+
+/* Fuel Gauge */
+#fuel-gauge {
+    position: absolute;
+    bottom: 40px;
+    left: 200px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(0, 200, 255, 0.5);
+    border-radius: 12px;
+    padding: 10px 16px;
+    min-width: 140px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
+}
+
+#fuel-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+#fuel-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#fuel-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #ff4444, #ffaa00, #44ff44);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+#fuel-text {
+    font-size: 13px;
+    color: #ccc;
+    margin-top: 3px;
+    font-weight: 600;
+}
+
+/* Distance */
+#distance-display {
+    position: absolute;
+    bottom: 40px;
+    left: 380px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(100, 255, 100, 0.4);
+    border-radius: 12px;
+    padding: 10px 16px;
+    min-width: 120px;
+    backdrop-filter: blur(4px);
+}
+
+#distance-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 2px;
+}
+
+#distance-value {
+    font-size: 18px;
+    color: #8f8;
+    font-weight: 600;
+}
+
+/* Landmarks */
+#landmarks-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(255, 200, 100, 0.4);
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-width: 160px;
+    backdrop-filter: blur(4px);
+}
+
+#landmarks-label {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+#landmarks-list {
+    font-size: 13px;
+    color: #ddd;
+}
+
+.landmark-item {
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.5;
+    transition: opacity 0.5s ease;
+}
+
+.landmark-item.discovered {
+    opacity: 1;
+    color: #ffcc33;
+}
+
+.landmark-item .lm-icon {
+    font-size: 14px;
+}
+
+/* Controls Hint */
+#controls-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    gap: 20px;
+    backdrop-filter: blur(4px);
+    opacity: 0.7;
+}
+
+/* Compass */
+#compass {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.65);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+#compass-n {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: #f44;
+    font-weight: 700;
+}
+
+#compass-needle {
+    font-size: 22px;
+    color: #fff;
+    transition: transform 0.1s linear;
+}
+
+/* Minimap */
+#minimap-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+#minimap {
+    display: block;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a0a0a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.8s ease;
+}
+
+#loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-content {
+    text-align: center;
+}
+
+#loading-content h1 {
+    font-size: 36px;
+    color: #ffcc33;
+    text-shadow: 0 0 30px rgba(255, 204, 51, 0.3);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+}
+
+.loading-subtitle {
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+#loading-bar-container {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#loading-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffcc33, #ff8833);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+#loading-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 12px;
+    letter-spacing: 1px;
+}
+
+/* Start Screen */
+#start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a0a0a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 90;
+}
+
+#start-content {
+    text-align: center;
+    max-width: 520px;
+    padding: 20px;
+}
+
+#start-content h1 {
+    font-size: 42px;
+    color: #ffcc33;
+    text-shadow: 0 0 40px rgba(255, 204, 51, 0.3);
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.start-subtitle {
+    font-size: 15px;
+    color: #999;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+
+.start-info {
+    margin-bottom: 30px;
+}
+
+.start-info-item {
+    font-size: 14px;
+    color: #bbb;
+    margin: 8px 0;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.start-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 12px;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+#start-btn {
+    pointer-events: auto;
+    background: linear-gradient(135deg, #ff8833, #ffcc33);
+    border: none;
+    color: #1a0a00;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 14px 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(255, 136, 51, 0.3);
+}
+
+#start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(255, 136, 51, 0.5);
+}
+
+/* Landmark Notification */
+#landmark-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #ffcc33;
+    border-radius: 12px;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    animation: notifPop 0.5s ease;
+}
+
+@keyframes notifPop {
+    0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+#notif-icon {
+    font-size: 28px;
+}
+
+#notif-text {
+    font-size: 18px;
+    color: #ffcc33;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #speedometer { bottom: 80px; left: 16px; padding: 8px 14px; min-width: 90px; }
+    #speed-value { font-size: 28px; }
+    #fuel-gauge { bottom: 20px; left: 16px; min-width: 100px; padding: 6px 12px; }
+    #distance-display { bottom: 20px; right: 16px; left: auto; min-width: 90px; }
+    #landmarks-display { top: 10px; right: 10px; min-width: 120px; padding: 8px 12px; }
+    #compass { top: 60px; right: 10px; width: 44px; height: 44px; }
+    #controls-hint { display: none; }
+    #minimap-container { top: 10px; left: 10px; width: 120px; height: 120px; }
+    #minimap { width: 120px; height: 120px; }
+}

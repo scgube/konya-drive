@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konya: Ufukların Ötesinde</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="hud">
+            <div id="speedometer">
+                <div id="speed-value">0</div>
+                <div id="speed-unit">km/h</div>
+            </div>
+            <div id="fuel-gauge">
+                <div id="fuel-label">YAKIT</div>
+                <div id="fuel-bar-container">
+                    <div id="fuel-bar"></div>
+                </div>
+                <div id="fuel-text">100%</div>
+            </div>
+            <div id="distance-display">
+                <div id="distance-label">MESAFE</div>
+                <div id="distance-value">0.0 km</div>
+            </div>
+            <div id="landmarks-display">
+                <div id="landmarks-label">KEŞİFLER</div>
+                <div id="landmarks-list"></div>
+            </div>
+            <div id="controls-hint">
+                <span>WASD / Ok Tuşları: Sürüş</span>
+                <span>Fare: Kamera</span>
+                <span>R: Yeniden Başlat</span>
+            </div>
+            <div id="compass">
+                <div id="compass-n">N</div>
+                <div id="compass-needle">↑</div>
+            </div>
+        </div>
+        <div id="minimap-container">
+            <canvas id="minimap" width="180" height="180"></canvas>
+        </div>
+        <div id="loading-screen">
+            <div id="loading-content">
+                <h1>KONYA: UFUKLARIN ÖTESİNDE</h1>
+                <div class="loading-subtitle">Drive Beyond Horizons - Konya Edition</div>
+                <div id="loading-bar-container">
+                    <div id="loading-bar"></div>
+                </div>
+                <div id="loading-text">Yükleniyor...</div>
+            </div>
+        </div>
+        <div id="start-screen" style="display:none;">
+            <div id="start-content">
+                <h1>KONYA: UFUKLARIN ÖTESİNDE</h1>
+                <div class="start-subtitle">Konya'nın engin bozkırlarında sürüş macerası</div>
+                <div class="start-info">
+                    <div class="start-info-item">🗺️ Mevlana'dan Çatalhöyük'e, Tuz Gölü'nden Selçuklu Kulesi'ne...</div>
+                    <div class="start-info-item">⛽ Yakıtını takip et, keşfet ve sınırları zorla!</div>
+                </div>
+                <button id="start-btn">OYUNU BAŞLAT</button>
+                <div class="start-controls">
+                    <span>WASD / ↑↓←→ Sürüş</span>
+                    <span>Fare ile Kamera</span>
+                </div>
+            </div>
+        </div>
+        <div id="landmark-notification" style="display:none;">
+            <div id="notif-icon">📍</div>
+            <div id="notif-text">Yeni keşif!</div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
