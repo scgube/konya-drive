@@ -4,7 +4,7 @@ import { Controls } from './controls.js';
 import { Terrain } from './terrain.js';
 import { RoadSystem } from './roads.js';
 import { LandmarkSystem } from './landmarks.js';
-import { GasStationSystem } from './gasstations.js';
+import { GasStationSystem } from './gasstations.js?v=1';
 import { Car } from './car.js';
 import { UI } from './ui.js';
 
