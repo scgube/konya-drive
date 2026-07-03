@@ -1,5 +1,5 @@
 // main.js - Oyun başlatma ve başlangıç noktası
-import { Game } from './game.js?v=5';
+import { Game } from './game.js?v=6';
 
 // Initialize game when DOM is ready
 if (document.readyState === 'loading') {

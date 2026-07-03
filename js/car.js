@@ -28,8 +28,7 @@ export class Car {
         this.drag = 0.08;
         this.rollingFriction = 2;
 
-        // Collision data
-        this.obstacles = [];
+
 
         // Fuel
         this.fuel = 100;
