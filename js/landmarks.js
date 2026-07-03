@@ -757,6 +757,15 @@ export class LandmarkSystem {
         return newDiscovery;
     }
 
+    getColliders() {
+        // Return landmark positions with wide collision radii
+        return this.landmarks.map(lm => ({
+            x: lm.worldX,
+            z: lm.worldZ,
+            radius: 14
+        }));
+    }
+
     update(time) {
         // Animate beacons
         for (const lm of this.landmarks) {

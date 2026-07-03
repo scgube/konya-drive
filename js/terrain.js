@@ -326,6 +326,15 @@ export class Terrain {
         return minDist;
     }
 
+    getColliders() {
+        // Return tree positions and radii for collision detection
+        return this.trees.map(t => ({
+            x: t.position.x,
+            z: t.position.z,
+            radius: 1.5
+        }));
+    }
+
     dispose() {
         if (this.terrainMesh) {
             this.scene.remove(this.terrainMesh);

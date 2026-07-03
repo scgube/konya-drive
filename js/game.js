@@ -214,7 +214,12 @@ export class Game {
 
     async _initCar() {
         await new Promise(resolve => setTimeout(resolve, 50));
-        this.car = new Car(this.scene, this.terrain);
+        // Gather obstacle positions for collision detection
+        const obstacles = [
+            ...this.terrain.getColliders(),
+            ...this.landmarks.getColliders()
+        ];
+        this.car = new Car(this.scene, this.terrain, obstacles);
     }
 
     _animate() {

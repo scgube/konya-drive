@@ -2,9 +2,10 @@
 import * as THREE from 'three';
 
 export class Car {
-    constructor(scene, terrain) {
+    constructor(scene, terrain, obstacles = []) {
         this.scene = scene;
         this.terrain = terrain;
+        this.obstacles = obstacles || [];
 
         // Physics state
         this.x = 0;
@@ -18,14 +19,17 @@ export class Car {
         // Car parameters
         this.maxSpeed = 180; // km/h
         this.maxSpeedMs = 50; // m/s
-        this.accelerationPower = 25;
+        this.accelerationPower = 30;
         this.brakePower = 40;
-        this.deceleration = 8;
+        this.deceleration = 10;
         this.steerSpeed = 2.5;
         this.steerMax = 0.6;
         this.steerReturn = 4;
-        this.drag = 0.3;
+        this.drag = 0.08;
         this.rollingFriction = 2;
+
+        // Collision data
+        this.obstacles = [];
 
         // Fuel
         this.fuel = 100;
@@ -259,6 +263,8 @@ export class Car {
         this.z = -45;
         this.heading = 0.5;
         this.speed = 0;
+        this.y = this.terrain.getHeight(this.x, this.z);
+        this.carGroup.position.y = this.y + 0.4;
         this.updateVisual();
     }
 
@@ -301,7 +307,7 @@ export class Car {
         }
 
         // Boost
-        const boostMultiplier = state.boost ? 1.4 : 1.0;
+        const boostMultiplier = state.boost ? 2.5 : 1.0;
 
         // Apply acceleration (convert to m/s)
         if (this.acceleration !== 0) {
@@ -327,11 +333,11 @@ export class Car {
         // Update heading based on speed and steer
         if (Math.abs(this.speed) > 0.5) {
             const turnRate = this.steerAngle * (1 + Math.min(Math.abs(this.speed) / 20, 1.5));
-            this.heading += turnRate * dt * (this.speed > 0 ? 1 : -1);
+            this.heading -= turnRate * dt * (this.speed > 0 ? 1 : -1);
         }
 
         // Move
-        const dx = Math.sin(this.heading) * this.speed * dt;
+        const dx = -Math.sin(this.heading) * this.speed * dt;
         const dz = Math.cos(this.heading) * this.speed * dt;
         this.x += dx;
         this.z += dz;
@@ -339,12 +345,28 @@ export class Car {
         // Get terrain height
         this.y = this.terrain.getHeight(this.x, this.z);
 
-        // Simple suspension: car follows terrain with slight smoothing
+        // Simple suspension: car follows terrain with smoothing
         const targetY = this.y + 0.4; // ride height
-        this.carGroup.position.y += (targetY - this.carGroup.position.y) * 0.3;
+        const heightDiff = Math.abs(targetY - this.carGroup.position.y);
+        const lerpFactor = heightDiff > 1.0 ? 0.9 : 0.3;
+        this.carGroup.position.y += (targetY - this.carGroup.position.y) * lerpFactor;
 
         // Terrain following rotation (tilt based on terrain normal)
         this._updateTerrainTilt();
+
+        // Collision detection: push car away from obstacles
+        for (const obs of this.obstacles) {
+            const dx = this.x - obs.x;
+            const dz = this.z - obs.z;
+            const dist = Math.sqrt(dx * dx + dz * dz);
+            const minDist = obs.radius + 1.2;
+            if (dist < minDist && dist > 0.01) {
+                const overlap = minDist - dist;
+                this.x += (dx / dist) * overlap;
+                this.z += (dz / dist) * overlap;
+                this.speed *= 0.4;
+            }
+        }
 
         // Fuel consumption
         if (Math.abs(this.speed) > 0.5) {
