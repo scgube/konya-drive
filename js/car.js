@@ -333,11 +333,11 @@ export class Car {
         // Update heading based on speed and steer
         if (Math.abs(this.speed) > 0.5) {
             const turnRate = this.steerAngle * (1 + Math.min(Math.abs(this.speed) / 20, 1.5));
-            this.heading -= turnRate * dt;
+            this.heading += turnRate * dt;
         }
 
         // Move
-        const dx = -Math.sin(this.heading) * this.speed * dt;
+        const dx = Math.sin(this.heading) * this.speed * dt;
         const dz = Math.cos(this.heading) * this.speed * dt;
         this.x += dx;
         this.z += dz;
@@ -399,12 +399,12 @@ export class Car {
         const sampleDist = 1.5;
         const hCenter = this.terrain.getHeight(this.x, this.z);
         const hForward = this.terrain.getHeight(
-            this.x - Math.sin(this.heading) * sampleDist,
+            this.x + Math.sin(this.heading) * sampleDist,
             this.z + Math.cos(this.heading) * sampleDist
         );
         const hRight = this.terrain.getHeight(
             this.x + Math.cos(this.heading) * sampleDist,
-            this.z + Math.sin(this.heading) * sampleDist
+            this.z - Math.sin(this.heading) * sampleDist
         );
 
         const tiltForward = (hForward - hCenter) / sampleDist;
