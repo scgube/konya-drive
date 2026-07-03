@@ -4,6 +4,7 @@ import { Controls } from './controls.js';
 import { Terrain } from './terrain.js';
 import { RoadSystem } from './roads.js';
 import { LandmarkSystem } from './landmarks.js';
+import { GasStationSystem } from './gasstations.js';
 import { Car } from './car.js';
 import { UI } from './ui.js';
 
@@ -20,8 +21,10 @@ export class Game {
         this.terrain = null;
         this.roads = null;
         this.landmarks = null;
+        this.gasStations = null;
         this.car = null;
         this.ui = null;
+        this._refuelNotified = false;
 
         // Camera
         this.camMode = 'thirdperson';
@@ -64,6 +67,9 @@ export class Game {
 
         this.ui.updateLoading(65, 'Simge yapılar inşa ediliyor...');
         await this._initLandmarks();
+
+        this.ui.updateLoading(73, 'Benzin istasyonları kuruluyor...');
+        await this._initGasStations();
 
         this.ui.updateLoading(80, 'Araç hazırlanıyor...');
         await this._initCar();
@@ -212,12 +218,17 @@ export class Game {
         this.landmarks = new LandmarkSystem(this.scene, this.terrain);
     }
 
+    async _initGasStations() {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        this.gasStations = new GasStationSystem(this.scene, this.terrain);
+    }
+
     async _initCar() {
         await new Promise(resolve => setTimeout(resolve, 50));
-        // Gather obstacle positions for collision detection
         const obstacles = [
             ...this.terrain.getColliders(),
-            ...this.landmarks.getColliders()
+            ...this.landmarks.getColliders(),
+            ...this.gasStations.getColliders()
         ];
         this.car = new Car(this.scene, this.terrain, obstacles);
     }
@@ -255,8 +266,21 @@ export class Game {
         const time = this.clock.elapsedTime;
         this.landmarks.update(time);
 
-        // Check landmark discovery
+        // Update gas stations
+        this.gasStations.update(time);
+
+        // Check refuel at gas stations
         const carPos = this.car.getPosition();
+        const gsState = this.gasStations.getRefuelStatus(carPos.x, carPos.z, Math.abs(this.car.speed));
+        if (gsState.refueling) {
+            this.car.addFuel(dt * 20);
+            if (!this._refuelNotified) {
+                this.ui.showNotification(`⛽ ${gsState.stationName} - Yakıt ikmali yapılıyor...`);
+                this._refuelNotified = true;
+            }
+        } else {
+            this._refuelNotified = false;
+        }
         const newLm = this.landmarks.checkDiscovery(carPos.x, carPos.z);
 
         if (newLm) {
@@ -284,7 +308,8 @@ export class Game {
             this.car.heading,
             carPos.x,
             carPos.z,
-            this.landmarks.getLandmarks()
+            this.landmarks.getLandmarks(),
+            this.gasStations.getStations()
         );
 
         // Update shadow camera to follow car

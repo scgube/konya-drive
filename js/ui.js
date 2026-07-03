@@ -73,7 +73,7 @@ export class UI {
         }
     }
 
-    update(speedKmh, fuel, distanceKm, heading, carX, carZ, landmarks) {
+    update(speedKmh, fuel, distanceKm, heading, carX, carZ, landmarks, stations = []) {
         // Speed
         this.speedValue.textContent = Math.round(speedKmh);
 
@@ -119,10 +119,10 @@ export class UI {
         }
 
         // Minimap
-        this._drawMinimap(carX, carZ, heading, landmarks);
+        this._drawMinimap(carX, carZ, heading, landmarks, stations);
     }
 
-    _drawMinimap(carX, carZ, heading, landmarks) {
+    _drawMinimap(carX, carZ, heading, landmarks, stations = []) {
         const ctx = this.minimapCtx;
         const s = this.minimapSize;
         const scale = this.minimapScale;
@@ -202,6 +202,18 @@ export class UI {
                     ctx.font = '7px sans-serif';
                     ctx.fillText(lm.name.substring(0, 8), lx + 5, ly + 2);
                 }
+            }
+        }
+
+        // Draw gas stations
+        for (const st of stations) {
+            const sx = cx + (st.x - carX) * scale;
+            const sy = cy + (st.z - carZ) * scale;
+            if (sx >= 0 && sx <= s && sy >= 0 && sy <= s) {
+                ctx.fillStyle = '#ff6633';
+                ctx.fillRect(sx - 2, sy - 2, 4, 4);
+                ctx.font = '5px sans-serif';
+                ctx.fillText('⛽', sx + 3, sy + 2);
             }
         }
 
