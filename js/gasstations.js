@@ -116,6 +116,15 @@ export class GasStationSystem {
         };
     }
 
+    /** Returns station positions {x,z} for minimap drawing */
+    getStations() {
+        return this.stations.map(s => ({
+            x: s.worldX,
+            z: s.worldZ,
+            name: s.config?.name || ''
+        }));
+    }
+
     getColliders() {
         return this.stations.map(s => ({
             x: s.worldX,
