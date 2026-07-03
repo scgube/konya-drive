@@ -333,7 +333,7 @@ export class Car {
         // Update heading based on speed and steer
         if (Math.abs(this.speed) > 0.5) {
             const turnRate = this.steerAngle * (1 + Math.min(Math.abs(this.speed) / 20, 1.5));
-            this.heading -= turnRate * dt;
+            this.heading += turnRate * dt;
         }
 
         // Move
