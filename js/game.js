@@ -5,7 +5,7 @@ import { Terrain } from './terrain.js?v=1';
 import { RoadSystem } from './roads.js?v=1';
 import { LandmarkSystem } from './landmarks.js?v=1';
 import { GasStationSystem } from './gasstations.js?v=1';
-import { Car } from './car.js?v=1';
+import { Car } from './car.js?v=2';
 import { UI } from './ui.js?v=1';
 
 export class Game {
