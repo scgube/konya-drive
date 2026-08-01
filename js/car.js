@@ -33,7 +33,7 @@ export class Car {
         // Fuel
         this.fuel = 100;
         this.maxFuel = 100;
-        this.fuelConsumption = 0.05; // per meter
+        this.fuelConsumption = 0.03; // per meter
         this.idleFuelConsumption = 0.02;
 
         // Visual
