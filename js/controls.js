@@ -75,8 +75,8 @@ export class Controls {
         return {
             forward: this.keys['KeyW'] || this.keys['ArrowUp'],
             backward: this.keys['KeyS'] || this.keys['ArrowDown'],
-            left: this.keys['KeyA'] || this.keys['ArrowLeft'],
-            right: this.keys['KeyD'] || this.keys['ArrowRight'],
+            left: this.keys['KeyD'] || this.keys['ArrowLeft'],
+            right: this.keys['KeyA'] || this.keys['ArrowRight'],
             brake: this.keys['Space'],
             reset: this.keys['KeyR'],
             boost: this.keys['ShiftLeft'] || this.keys['ShiftRight']
