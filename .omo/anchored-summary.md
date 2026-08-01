@@ -23,8 +23,8 @@
 | Key | Behavior |
 |-----|----------|
 | W / ↑ | Forward (heading=0, dx=0, dz=+speed) |
-| A / ← | **Car turns RIGHT** (heading decreases CW, -sin(negative)=+dx) |
-| D / → | **Car turns LEFT** (heading increases CCW, -sin(positive)=-dx) |
+| D / ← | **Car turns RIGHT** (heading decreases CW, -sin(negative)=+dx) |
+| A / → | **Car turns LEFT** (heading increases CCW, -sin(positive)=-dx) |
 | Shift | Boost (2.5×) |
 | Space | Brake |
 | R | Reset |
